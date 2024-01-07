@@ -4,6 +4,8 @@ import com.spotify.api.applicationApi.PlaylistApi;
 import com.spotify.pojo.Error;
 import com.spotify.pojo.Playlist;
 import com.spotify.utils.DataLoader;
+import io.qameta.allure.Description;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
@@ -15,9 +17,9 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class PlaylistTests {
 
-
-
-    @Test
+@Story("Create a Playlist Story")
+@Description("With this POST API user should be able to create a new Playlist")
+    @Test(description = "User should be abe to create new playlist")
     public void shouldBeAbleToCreatePlaylist(){
 
 

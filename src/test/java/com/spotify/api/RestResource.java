@@ -1,6 +1,7 @@
 package com.spotify.api;
 
 import com.spotify.pojo.Playlist;
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
@@ -27,6 +28,7 @@ public class RestResource {
 
     }
 
+    @Step
     public static Response get(String path, String token){
         return given(getRequestSpec())
                 .header("Authorization", "Bearer " + token)
@@ -38,6 +40,7 @@ public class RestResource {
                 .response();
     }
 
+    @Step
     public static Response put(String path, String token, Object requestPlaylist){
        return  given(getRequestSpec()).
                 body(requestPlaylist)
@@ -51,6 +54,7 @@ public class RestResource {
 
     }
 
+    @Step
     public static Response postAccount(HashMap<String, String> formParams){
         return  given(getAccountRequestSpec())
                 .formParams(formParams)
