@@ -1,5 +1,6 @@
 package com.spotify.tests;
 
+import com.spotify.api.StatusCode;
 import com.spotify.api.applicationApi.PlaylistApi;
 import com.spotify.pojo.Error;
 import com.spotify.pojo.Playlist;
@@ -11,11 +12,13 @@ import org.testng.annotations.Test;
 
 import static com.spotify.api.SpecBuilder.getRequestSpec;
 import static com.spotify.api.SpecBuilder.getResponseSpec;
+import static com.spotify.utils.FakerUtils.generateDescription;
+import static com.spotify.utils.FakerUtils.generateName;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class PlaylistTests {
+public class PlaylistTests extends BaseTest{
 
 @Story("Create a Playlist Story")
 @Description("With this POST API user should be able to create a new Playlist")
@@ -24,8 +27,8 @@ public class PlaylistTests {
 
 
         Playlist requestPlaylist = new Playlist()
-                .setName("New Songs1")
-                .setDescription("This is a New Song1 playlist")
+                .setName(generateName())
+                .setDescription(generateDescription())
                 .setPublic(true);
 
 //        requestPlaylist.setName("New Songs1");
@@ -33,7 +36,7 @@ public class PlaylistTests {
 //        requestPlaylist.setPublic(true);
 
         Response response = PlaylistApi.post(requestPlaylist);
-        assertThat(response.statusCode(), equalTo(201));
+        assertThat(response.statusCode(), equalTo(StatusCode.CODE_201.getCode()));
 
         Playlist responsePlaylist = response.as(Playlist.class);
 
@@ -55,7 +58,7 @@ public class PlaylistTests {
 
       System.out.println(response.asString());
 
-      assertThat(response.statusCode(), equalTo(200));
+      assertThat(response.statusCode(), equalTo(StatusCode.CODE_200.getCode()));
 
       Playlist responsePlaylist = response.as(Playlist.class);
 
@@ -71,12 +74,12 @@ public class PlaylistTests {
 
 
         Playlist requestPlaylist = new Playlist();
-        requestPlaylist.setName("My New Updated Playlist1");
-        requestPlaylist.setDescription("This playlist1 is updated");
+        requestPlaylist.setName(generateName());
+        requestPlaylist.setDescription(generateDescription());
         requestPlaylist.setPublic(true);
 
         Response response = PlaylistApi.put(DataLoader.getInstance().getUpdatePlaylistId(), requestPlaylist);
-        assertThat(response.statusCode(), equalTo(200));
+        assertThat(response.statusCode(), equalTo(StatusCode.CODE_200.getCode()));
 
     }
 
@@ -87,16 +90,16 @@ public class PlaylistTests {
 
         Playlist requestPlaylist = new Playlist();
 //        requestPlaylist.setName("New Songs1");
-        requestPlaylist.setDescription("This is a New Song1 playlist");
+        requestPlaylist.setDescription(generateDescription());
         requestPlaylist.setPublic(true);
 
         Response response = PlaylistApi.post(requestPlaylist);
-        assertThat(response.statusCode(), equalTo(400));
+        assertThat(response.statusCode(), equalTo(StatusCode.CODE_400.getCode()));
 
         Error error = response.as(Error.class);
 
-        assertThat(error.getError().getStatus(), equalTo(400));
-        assertThat(error.getError().getMessage(), equalTo("Missing required field: name"));
+        assertThat(error.getError().getStatus(), equalTo(StatusCode.CODE_400.getCode()));
+        assertThat(error.getError().getMessage(), equalTo(StatusCode.CODE_400.getMessage()));
 
     }
 
@@ -108,17 +111,17 @@ public class PlaylistTests {
 
 
         Playlist requestPlaylist = new Playlist();
-        requestPlaylist.setName("New Songs1");
-        requestPlaylist.setDescription("This is a New Song1 playlist");
+        requestPlaylist.setName(generateName());
+        requestPlaylist.setDescription(generateDescription());
         requestPlaylist.setPublic(true);
 
         Response response = PlaylistApi.post(requestPlaylist, invalidToken);
-        assertThat(response.statusCode(), equalTo(401));
+        assertThat(response.statusCode(), equalTo(StatusCode.CODE_401.getCode()));
 
         Error error = response.as(Error.class);
 
-        assertThat(error.getError().getStatus(), equalTo(401));
-        assertThat(error.getError().getMessage(), equalTo("Invalid access token"));
+        assertThat(error.getError().getStatus(), equalTo(StatusCode.CODE_401.getCode()));
+        assertThat(error.getError().getMessage(), equalTo(StatusCode.CODE_401.getMessage()));
 
     }
 
