@@ -26,6 +26,7 @@ public class PlaylistTests extends BaseTest{
     public void shouldBeAbleToCreatePlaylist(){
 
 
+       //add payload
         Playlist requestPlaylist = new Playlist()
                 .setName(generateName())
                 .setDescription(generateDescription())
